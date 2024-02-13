@@ -1,10 +1,5 @@
-# # Generating fibers for patient specific geometries
-#
-# In this demo we will show how to generate fiber orientations from a patient specific geometry. We will use a mesh of an LV that is constructed using gmsh (https://gmsh.info), see https://github.com/finsberg/ldrb/blob/main/demos/mesh.msh
-#
-# It is important that the mesh contains physical surfaces of the endocardium (lv and rv if present), the base and the epicardium. You can find an example of how to generate such a geometry using the python API for gmsh here: https://github.com/finsberg/pulse/blob/0d7b5995f62f41df4eec9f5df761fa03da725f69/pulse/geometries.py#L160
-#
-# First we import the necessary packages. Note that we also import `meshio` which is used for converted from `.msh` (gmsh) to `.xdmf` (FEnICS).
+# # Generating fibers for patient specific 2D geometries
+
 import dolfin as df
 from math import pi, cos, sin
 import quaternion
@@ -91,27 +86,22 @@ sn = df.cos(theta)*sl + df.sin(theta)*W*sl
 sn = sn/df.sqrt(df.dot(sn, sn))
 
 # Compute vectors for each element
-#sigma_l = df.project(sl, Vg, solver_type="gmres", preconditioner_type="hypre_amg")
 sigma_n = df.project(sn, Vg, solver_type="gmres", preconditioner_type="hypre_amg")
-#grad_u = df.project(gradU, Vg, solver_type="gmres", preconditioner_type="hypre_amg")
 u = df.project(u, V, solver_type="gmres", preconditioner_type="hypre_amg")
 
-
-#phi_epi.rename("phi_epi", "phi_epi")
-#phi_lv.rename("phi_lv","phi_lv")
-#phi_rv.rename("phi_rv","phi_rv")
 sigma_n.rename("sigma_n","fiber")
-#sigma_l.rename("sigma_l","sigma_l")
 u.rename("u","u")
-#grad_u.rename("grad_u", "grad_u")
 
+# Assigns label (healthy or fibrosis) for each element
 V0 = df.FunctionSpace(mesh, 'DG', 0)
 mat  = df.Function(V0)
-mat_values = np.array([0, 1])  # valor de condutividade para cada regiao
+mat_values = np.array([0, 1])  # conductivity value for each region
 
 help = np.asarray(materials.array(), dtype=np.int32)
-mat.vector()[:] = np.choose(help, mat_values) #atribuir o valor de condutividade para cada elemento 
+mat.vector()[:] = np.choose(help, mat_values) 
 mat.rename("material","material")
+
+# Write mesh, fiber and material label in XDMF file
 
 with df.XDMFFile(mesh.mpi_comm(), meshname + ".xdmf") as xdmf:
     xdmf.parameters.update(
@@ -120,11 +110,6 @@ with df.XDMFFile(mesh.mpi_comm(), meshname + ".xdmf") as xdmf:
         "rewrite_function_mesh": False
     })
     xdmf.write(mesh)
-#    xdmf.write(phi_epi, 0)
-#    xdmf.write(phi_lv, 0)
-#    xdmf.write(phi_rv, 0)
     xdmf.write(u, 0)
     xdmf.write(sigma_n, 0)
-#    xdmf.write(sigma_l, 0)
-#    xdmf.write(grad_u, 0)
     xdmf.write(mat, 0)
