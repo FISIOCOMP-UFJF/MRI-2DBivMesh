@@ -15,7 +15,7 @@ $ python generate_mesh.py -epi ./segmentation/epi9.txt -vd ./segmentation/endoVD
 ```
 The outuput demo_biv_mesh.msh will be the mesh in Gmsh format.
 
-With the mesh it is possible to generate the fiber orientarion using:
+With the mesh it is possible to generate the fiber orientation using:
 
 ```sh
 $ python generate_fiber2D_biv.py -meshname demo_biv_mesh
