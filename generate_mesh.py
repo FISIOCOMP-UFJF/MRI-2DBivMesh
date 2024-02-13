@@ -7,7 +7,6 @@ parser.add_argument('-epi', type=str, default='epi.txt', help='File with segment
 parser.add_argument('-vd', type=str, default='vd.txt', help='File with segmentation right ventricle points')
 parser.add_argument('-ve', type=str, default='ve.txt', help='File with segmentation left ventricle points')
 
-#num_fib = input('Enter the number of fibroses: ') #leitura da quantidade de fibroses em um argumento
 parser.add_argument('-numfib', type=int, default=0, help='Number of fibroses')
 
 parser.add_argument('-fibbase', type=str, default=f'f', help='Base name for fibrosis files. Files must start with 0 id.')
@@ -62,7 +61,6 @@ gmsh.model.addPhysicalGroup(1, [sp_ve, sp_ve2], tag = 20)
 
 cl_list = [cl_epi, cl_vd, cl_ve]
 
-#print(cl_list)
 
 splines = []  # uma lista de pontos representando a curva
 fib_splines = []
@@ -80,8 +78,7 @@ for fib_pts in fib_points:  # coordenadas dos pontos
 
 gmsh.model.geo.synchronize()
 
-#print(cl_fibs)
-#print(cl_list)
+
 # Cria a superfície
 surface = gmsh.model.geo.addPlaneSurface(cl_list)
 gmsh.model.geo.synchronize()
