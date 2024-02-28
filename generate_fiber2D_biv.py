@@ -102,13 +102,10 @@ def generate_fiber2D(mesh):
 
     # Write mesh, fiber and material label in XDMF file
 
-    with df.XDMFFile(mesh.mpi_comm(), meshname + ".xdmf") as xdmf:
-        xdmf.parameters.update(
-        {
-            "functions_share_mesh": True,
-            "rewrite_function_mesh": False
-        })
-        xdmf.write(mesh)
-        xdmf.write(u, 0)
-        xdmf.write(sigma_n, 0)
-        xdmf.write(mat, 0)
+    with df.XDMFFile(mesh.mpi_comm(), meshname+".vtu") as vtu_file:
+        vtu_file.parameters["functions_share_mesh"] = True
+       
+        vtu_file.write(mesh)
+        vtu_file.write(u, 0)
+        vtu_file.write(sigma_n, 0)
+        vtu_file.write(mat, 0)
