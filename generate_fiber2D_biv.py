@@ -5,7 +5,6 @@ from math import pi, cos, sin
 from fenics import File
 
 import numpy as np
-import argparse
 from dolfin_utils.meshconvert import meshconvert
 
 def solve_laplace(mesh, boundary_markers, boundary_values):
@@ -36,10 +35,10 @@ def solve_laplace(mesh, boundary_markers, boundary_values):
     return u
 
 
-def generate_fiber2D(mesh):
+def generate_fiber2D(mesh_name):
     
     #convert mesh to fenics format
-    meshname = mesh
+    meshname = mesh_name
     ifilename = meshname + '.msh'
     ofilename = meshname + '.xml'
     iformat = 'gmsh'
@@ -101,7 +100,6 @@ def generate_fiber2D(mesh):
     mat.rename("material","material")
 
     # Write mesh, fiber and material label in XDMF file
-
     with df.XDMFFile(mesh.mpi_comm(), meshname+".vtu") as vtu_file:
         vtu_file.parameters["functions_share_mesh"] = True
        

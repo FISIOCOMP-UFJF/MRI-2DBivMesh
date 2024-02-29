@@ -1,0 +1,7 @@
+__pycache__
+
+*.xml
+*.h5
+*.msh
+*.vtu
+*.geo_unrolled
