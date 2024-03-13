@@ -5,6 +5,7 @@ Generates 2D biventricular mesh from MRI to electrophysiology simulators.
 
   - FEniCS 2019.1.0
   - Gmsh
+  - meshio
 
 # Running examples
 ----
