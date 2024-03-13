@@ -4,4 +4,5 @@ __pycache__
 *.h5
 *.msh
 *.vtu
+*.xdmf
 *.geo_unrolled

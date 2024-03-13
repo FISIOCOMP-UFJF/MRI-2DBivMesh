@@ -2,8 +2,7 @@
 
 import dolfin as df
 from math import pi, cos, sin
-from fenics import File
-
+import meshio
 import numpy as np
 from dolfin_utils.meshconvert import meshconvert
 
@@ -98,12 +97,29 @@ def generate_fiber2D(mesh_name):
     help = np.asarray(materials.array(), dtype=np.int32)
     mat.vector()[:] = np.choose(help, mat_values) 
     mat.rename("material","material")
-
     # Write mesh, fiber and material label in XDMF file
-    with df.XDMFFile(mesh.mpi_comm(), meshname+".vtu") as vtu_file:
-        vtu_file.parameters["functions_share_mesh"] = True
-       
-        vtu_file.write(mesh)
-        vtu_file.write(u, 0)
-        vtu_file.write(sigma_n, 0)
-        vtu_file.write(mat, 0)
+    with df.XDMFFile(mesh.mpi_comm(), meshname + ".xdmf") as xdmf:
+        xdmf.parameters.update(
+        {
+            "functions_share_mesh": True,
+            "rewrite_function_mesh": False
+        })
+        xdmf.write(mesh)
+        xdmf.write(u, 0)
+        xdmf.write(sigma_n, 0)
+        xdmf.write(mat, 0)
+    
+    convert_xdmf_to_vtu(meshname)
+
+def convert_xdmf_to_vtu(meshname):
+    filename = meshname+".xdmf"
+
+    t, point_data, cell_data = None, None, None
+
+    with meshio.xdmf.TimeSeriesReader(filename) as reader:
+        points, cells = reader.read_points_cells()
+        t, point_data, cell_data = reader.read_data(0)
+
+    mesh = meshio.Mesh(points, cells, point_data=point_data, cell_data=cell_data,)
+    mesh.write(meshname+".vtu", file_format="vtu",  )
+        
