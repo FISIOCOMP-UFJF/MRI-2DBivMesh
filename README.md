@@ -8,21 +8,11 @@ Generates 2D biventricular mesh from MRI to electrophysiology simulators.
 
 # Running examples
 ----
-To generate mesh do:
+To generate .alg do:
 
 ```sh
-$ python generate_mesh.py -epi ./segmentation/epi9.txt -vd ./segmentation/endoVD9.txt -ve ./segmentation/endoVE9.txt -numfib 3 -fibbase ./segmentation/fibr9_ -o demo_biv_mesh
+$ python generate_alg.py -epi ./segmentation/epi9.txt -vd ./segmentation/endoVD9.txt -ve ./segmentation/endoVE9.txt -numfib 3 -fibbase ./segmentation/fibr9_ -o demo_biv_mesh
 ```
-The outuput demo_biv_mesh.msh will be the mesh in Gmsh format.
-
-With the mesh it is possible to generate the fiber orientation using:
-
-```sh
-$ python generate_fiber2D_biv.py -meshname demo_biv_mesh
-```
-
-The output will be a XDMF file.
-
 # How to cite:
 ----
 
