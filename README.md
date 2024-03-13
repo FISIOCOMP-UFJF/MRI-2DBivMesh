@@ -11,7 +11,7 @@ Generates 2D biventricular mesh from MRI to electrophysiology simulators.
 To generate .alg do:
 
 ```sh
-$ python generate_alg.py -epi ./segmentation/epi9.txt -vd ./segmentation/endoVD9.txt -ve ./segmentation/endoVE9.txt -numfib 3 -fibbase ./segmentation/fibr9_ -o demo_biv_mesh
+python generate_alg.py -epi ./segmentation/epi9.txt -vd ./segmentation/endoVD9.txt -ve ./segmentation/endoVE9.txt -numfib 3 -fibbase ./segmentation/fibr9_ -o demo_biv_mesh
 ```
 # How to cite:
 ----
