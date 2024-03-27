@@ -6,3 +6,4 @@ __pycache__
 *.vtu
 *.xdmf
 *.geo_unrolled
+*.alg
