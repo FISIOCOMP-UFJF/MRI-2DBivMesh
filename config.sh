@@ -16,7 +16,6 @@ if [ $(basename "$PWD") = "$dir" ]; then
                 make
                 if [ $? -eq 0 ]; then
                     echo "Project build successful."
-                    cp ../config_file.ini .
                 else
                     echo "Failed to build project."
                     exit 1

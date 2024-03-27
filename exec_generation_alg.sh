@@ -28,8 +28,8 @@ if [ $(basename "$PWD") = "$dir" ]; then
     fi
 
     cd hexa-mesh-from-VTK/
-
-    ./bin/HexaMeshFromVTK -i "../$output_file.vtu" --dx "$dx" --dy "$dy" --dz "$dz" -r 1000 -o "../$output_file.alg" -c config_file.ini --2d
+    ./bin/HexaMeshFromVTK -i "../$output_file.vtu" --dx "$dx" --dy "$dy" --dz "$dz" -r 1000 -o "../$output_file.alg" -c ../config_file.ini --2d
+    
 else
     echo "You are not in the desired directory."
     echo "Please go to the ${dir} directory and run the script again."    
