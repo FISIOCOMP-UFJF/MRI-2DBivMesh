@@ -1,6 +1,6 @@
 #!/bin/bash
+#set -x
 
-# Capturando argumentos
 epi=$1
 vd=$2
 ve=$3
