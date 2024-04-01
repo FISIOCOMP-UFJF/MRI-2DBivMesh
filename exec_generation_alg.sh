@@ -27,9 +27,10 @@ if [ $(basename "$PWD") = "$dir" ]; then
         exit 1
     fi
 
+    echo "Warning: the script considers that the mesh is on milimiter. For other units it is necessary to change the unit_factor (-r) in exec_generation.sh."
     cd hexa-mesh-from-VTK/
     ./bin/HexaMeshFromVTK -i "../$output_file.vtu" --dx "$dx" --dy "$dy" --dz "$dz" -r 1000 -o "../$output_file.alg" -c ../config_file.ini --2d
-    
+
 else
     echo "You are not in the desired directory."
     echo "Please go to the ${dir} directory and run the script again."    

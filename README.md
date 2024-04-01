@@ -7,6 +7,8 @@ Generates 2D biventricular mesh from MRI to electrophysiology simulators.
   - Gmsh
   - meshio
   - CMake
+  - [hexa-mesh-from-VTK](https://github.com/rsachetto/hexa-mesh-from-VTK.git): This repository is necessary for the generation of hexahedral meshes from VTK files. It will be cloned during the Configuration.
+  
 # Configuration
   ```sh
     bash config.sh
@@ -25,11 +27,6 @@ bash exec_generation_alg.sh epi vd ve numfib fibbase output_file_name dx dy dz
 ```sh
 bash exec_generation_alg.sh ./segmentation/epi9.txt ./segmentation/endoVD9.txt ./segmentation/endoVE9.txt 3 ./segmentation/fibr9_ output_file 0.2 0.2 0.2
 ```
-# Dependencies
-
-This project depends on the following repositories:
-
-- [hexa-mesh-from-VTK](https://github.com/rsachetto/hexa-mesh-from-VTK.git): This repository is necessary for the generation of hexahedral meshes from VTK files. It will be cloned during the Configuration.
 
 # How to cite:
 ----
