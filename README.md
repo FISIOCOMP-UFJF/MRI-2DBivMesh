@@ -13,6 +13,22 @@ Generates 2D biventricular mesh from MRI to electrophysiology simulators.
   ```sh
     bash config.sh
   ```
+
+# Description parameters
+  - epi: epicardium segmentation
+
+  - vd: right ventricle endocardium segmentation
+
+  - ve: left ventricle endocardium segmentation
+
+  - numfib: number of fibrosis files
+
+  - fibbase: prefix of the filenames with the fibrosis segmentation
+  
+  - output_file_name: output file name
+
+  - dx, dy, and dz: refer to the discretization for the .vtu. Conventionally, we use the value of 0.2.
+   
 # Running
 
 To generate .alg do:
