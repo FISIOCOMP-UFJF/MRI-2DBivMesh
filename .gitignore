@@ -1,0 +1,10 @@
+__pycache__
+
+*.xml
+*.h5
+*.msh
+*.vtu
+*.xdmf
+*.geo_unrolled
+*.alg
+hexa-mesh-from-VTK/

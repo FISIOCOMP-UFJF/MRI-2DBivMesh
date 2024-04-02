@@ -5,23 +5,44 @@ Generates 2D biventricular mesh from MRI to electrophysiology simulators.
 
   - FEniCS 2019.1.0
   - Gmsh
+  - meshio
+  - CMake
+  - [hexa-mesh-from-VTK](https://github.com/rsachetto/hexa-mesh-from-VTK.git): This repository is necessary for the generation of hexahedral meshes from VTK files. It will be cloned during the Configuration.
+  
+# Configuration
+  ```sh
+    bash config.sh
+  ```
 
-# Running examples
-----
-To generate mesh do:
+# Description parameters
+  - epi: epicardium segmentation
 
+  - vd: right ventricle endocardium segmentation
+
+  - ve: left ventricle endocardium segmentation
+
+  - numfib: number of fibrosis files
+
+  - fibbase: prefix of the filenames with the fibrosis segmentation
+  
+  - output_file_name: output file name
+
+  - dx, dy, and dz: refer to the discretization for the .vtu. Conventionally, we use the value of 0.2.
+   
+# Running
+
+To generate .alg do:
 ```sh
-$ python generate_mesh.py -epi ./segmentation/epi9.txt -vd ./segmentation/endoVD9.txt -ve ./segmentation/endoVE9.txt -numfib 3 -fibbase ./segmentation/fibr9_ -o demo_biv_mesh
+conda activate fenicsproject
 ```
-The outuput demo_biv_mesh.msh will be the mesh in Gmsh format.
-
-With the mesh it is possible to generate the fiber orientation using:
-
 ```sh
-$ python generate_fiber2D_biv.py -meshname demo_biv_mesh
+bash exec_generation_alg.sh epi vd ve numfib fibbase output_file_name dx dy dz
 ```
 
-The output will be a XDMF file.
+# Running example
+```sh
+bash exec_generation_alg.sh ./segmentation/epi9.txt ./segmentation/endoVD9.txt ./segmentation/endoVE9.txt 3 ./segmentation/fibr9_ output_file 0.2 0.2 0.2
+```
 
 # How to cite:
 ----
