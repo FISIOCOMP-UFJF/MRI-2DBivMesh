@@ -4,8 +4,8 @@
 epi=$1
 vd=$2
 ve=$3
-numfib=$4
-fibbase=$5
+numfib=${4:-0}
+fibbase=${5:--1}
 output_file=$6
 dx=$7
 dy=$8
@@ -17,6 +17,7 @@ if [ $(basename "$PWD") = "$dir" ]; then
 
     if [ $# -ne 9 ]; then
         echo "Usage: $0 epi vd ve numfib fibbase output_file dx dy dz"
+        echo "If numfib and fibbase are not used, use double quotes ("") in parameter passing."
         exit 1
     fi
 

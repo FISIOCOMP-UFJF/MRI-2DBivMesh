@@ -12,6 +12,9 @@ parser.add_argument('-fibbase', type=str, default='f', help='Base name for fibro
 parser.add_argument('-o', type=str, default='output', help='Output file name')
        
 args = parser.parse_args()
-generate_mesh_from_points(args.epi,args.vd,args.ve,args.fibbase, args.numfib, args.o)
+if args.fibbase == -1:
+    generate_mesh_from_points(args.epi,args.vd,args.ve,0, 0, args.o)
+else:
+    generate_mesh_from_points(args.epi,args.vd,args.ve,args.fibbase, args.numfib, args.o)
 generate_fiber2D(args.o, args.numfib)
 
