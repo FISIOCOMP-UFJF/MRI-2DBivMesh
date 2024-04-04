@@ -12,13 +12,14 @@ def generate_mesh_from_points(epi, vd, ve, fibbase, numfib, outputfile):
     vd_points = np.loadtxt(vd)
     ve_points = np.loadtxt(ve)
     
-    fib_points = [] #add all the fibrosis points into a vector.
-    for i in range(numfib):
-        fibfile = fibbase + str(i) + ".txt"
-        try: #error checking when loading files fib_points.
-            fib_points.append(np.loadtxt(fibfile))
-        except Exception as e:
-            print(f"Error loading points from the file {fibfile}: {e}")
+    if numfib > 0:
+        fib_points = [] #add all the fibrosis points into a vector.
+        for i in range(numfib):
+            fibfile = fibbase + str(i) + ".txt"
+            try: #error checking when loading files fib_points.
+                fib_points.append(np.loadtxt(fibfile))
+            except Exception as e:
+                print(f"Error loading points from the file {fibfile}: {e}")
     
     gmsh.initialize()
 
@@ -57,16 +58,18 @@ def generate_mesh_from_points(epi, vd, ve, fibbase, numfib, outputfile):
     splines = []  #list of points representing the curve.
     fib_splines = []
     cl_fibs = []
-    for fib_pts in fib_points:  #coordinates of the points
-        fpt = []
-        for pt in fib_pts:  #add the points to gmsh
-            fpt.append(gmsh.model.geo.addPoint(pt[0], pt[1], pt[2], lc))
     
-        fib_sp = gmsh.model.geo.addSpline(fpt)
-        fib_sp2 = gmsh.model.geo.addSpline([fpt[-1], fpt[0]])
-        cl = gmsh.model.geo.addCurveLoop([fib_sp, fib_sp2])
-        cl_fibs.append(cl)
-        cl_list.append(cl)
+    if numfib > 0:
+        for fib_pts in fib_points:  #coordinates of the points
+            fpt = []
+            for pt in fib_pts:  #add the points to gmsh
+                fpt.append(gmsh.model.geo.addPoint(pt[0], pt[1], pt[2], lc))
+        
+            fib_sp = gmsh.model.geo.addSpline(fpt)
+            fib_sp2 = gmsh.model.geo.addSpline([fpt[-1], fpt[0]])
+            cl = gmsh.model.geo.addCurveLoop([fib_sp, fib_sp2])
+            cl_fibs.append(cl)
+            cl_list.append(cl)
 
     gmsh.model.geo.synchronize()
 

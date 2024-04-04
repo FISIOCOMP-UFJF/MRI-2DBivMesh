@@ -34,7 +34,7 @@ def solve_laplace(mesh, boundary_markers, boundary_values):
     return u
 
 
-def generate_fiber2D(mesh_name):
+def generate_fiber2D(mesh_name, numfib):
     
     #convert mesh to fenics format
     meshname = mesh_name
@@ -94,7 +94,11 @@ def generate_fiber2D(mesh_name):
     mat  = df.Function(V0)
     mat_values = np.array([0, 1])  # conductivity value for each region
 
-    help = np.asarray(materials.array(), dtype=np.int32)
+    if numfib > 0:
+        help = np.asarray(materials.array(), dtype=np.int32)
+    else:
+        help = np.zeros(mesh.num_cells(), dtype=np.int32)
+
     mat.vector()[:] = np.choose(help, mat_values) 
     mat.rename("material","material")
     # Write mesh, fiber and material label in XDMF file

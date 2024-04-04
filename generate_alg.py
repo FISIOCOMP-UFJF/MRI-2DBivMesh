@@ -13,5 +13,5 @@ parser.add_argument('-o', type=str, default='output', help='Output file name')
        
 args = parser.parse_args()
 generate_mesh_from_points(args.epi,args.vd,args.ve,args.fibbase, args.numfib, args.o)
-generate_fiber2D(args.o)
+generate_fiber2D(args.o, args.numfib)
 
