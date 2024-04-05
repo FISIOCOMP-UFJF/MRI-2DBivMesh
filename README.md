@@ -6,7 +6,9 @@ Generates 2D biventricular mesh from MRI to electrophysiology simulators.
   - FEniCS 2019.1.0
   - Gmsh
   - meshio
+  - h5py 
   - CMake
+  - VTK
   - [hexa-mesh-from-VTK](https://github.com/rsachetto/hexa-mesh-from-VTK.git): This repository is necessary for the generation of hexahedral meshes from VTK files. It will be cloned during the Configuration.
   
 # Configuration
