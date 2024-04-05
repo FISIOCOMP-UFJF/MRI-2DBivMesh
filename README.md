@@ -43,6 +43,10 @@ bash exec_generation_alg.sh epi vd ve numfib fibbase output_file_name dx dy dz
 ```sh
 bash exec_generation_alg.sh ./segmentation/epi9.txt ./segmentation/endoVD9.txt ./segmentation/endoVE9.txt 3 ./segmentation/fibr9_ output_file 0.2 0.2 0.2
 ```
+For segmentation without fibrosis, set numFib to zero and optionally skip the fibrosis segmentation:
+```sh
+bash exec_generation_alg.sh ./segmentation/epi9.txt ./segmentation/endoVD9.txt ./segmentation/endoVE9.txt 0 output_file 0.2 0.2 0.2
+```
 
 # How to cite:
 ----
