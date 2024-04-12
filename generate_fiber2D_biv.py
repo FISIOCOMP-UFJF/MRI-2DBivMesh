@@ -46,7 +46,12 @@ def generate_fiber2D(mesh_name, numfib):
 
     # Create mesh and define function space
     mesh = df.Mesh(meshname + '.xml')
-    materials = df.MeshFunction("size_t", mesh, meshname + '_physical_region.xml')
+    if numfib==0:
+        materials = df.MeshFunction("size_t", mesh, 2)    
+        materials.set_all(0)
+    else:
+        materials = df.MeshFunction("size_t", mesh, meshname + '_physical_region.xml')
+
     boundary_markers = df.MeshFunction("size_t", mesh, meshname + '_facet_region.xml')
 
     V = df.FunctionSpace(mesh, 'Lagrange', 1)

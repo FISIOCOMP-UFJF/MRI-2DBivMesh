@@ -82,7 +82,8 @@ def generate_mesh_from_points(epi, vd, ve, fibbase, numfib, outputfile):
     for cl in cl_fibs:
         fib_surf.append(gmsh.model.geo.addPlaneSurface([cl]))
 
-    gmsh.model.addPhysicalGroup(2, fib_surf, tag = 1)    
+    if numfib > 0:
+        gmsh.model.addPhysicalGroup(2, fib_surf, tag = 1)    
 
     gmsh.model.geo.synchronize()
 
