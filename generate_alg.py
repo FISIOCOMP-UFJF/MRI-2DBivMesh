@@ -2,6 +2,7 @@
 import argparse
 from generate_mesh import generate_mesh_from_points
 from generate_fiber2D_biv import generate_fiber2D
+from generate_mesh import generate_mesh_from_matlab
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-epi', type=str, default='epi.txt', help='File with segmentation epicardium points')

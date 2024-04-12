@@ -7,4 +7,5 @@ __pycache__
 *.xdmf
 *.geo_unrolled
 *.alg
+*.mat
 hexa-mesh-from-VTK/
