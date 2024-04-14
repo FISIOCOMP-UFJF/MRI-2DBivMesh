@@ -1,13 +1,12 @@
 import gmsh
 import numpy as np
-import argparse
 import scipy.io
 
 
-def generate_mesh_from_matlab(patient, outputfile):
-    numfib = 0
+def generate_mesh_from_matlab(patient, outputfile, slice):
+    numfib = 0 #alterar após implementar fibrose em matlab
     data = scipy.io.loadmat(patient)
-    slicePatient = 6
+    slicePatient = slice
 
     endoX = data['setstruct']['EndoX'][0][0] #ve
     xlv = endoX[:,0,slicePatient]
@@ -32,11 +31,11 @@ def generate_mesh_from_matlab(patient, outputfile):
     ve_points = np.zeros((sz,3))
 
 
-    vd_points[:,0] = xlv[0:n:2] # -ve
-    vd_points[:,1] = ylv[0:n:2]
+    ve_points[:,0] = xlv[0:n:2] # -ve
+    ve_points[:,1] = ylv[0:n:2]
     
-    ve_points[:,0] = xrv[0:n:2] # -vd
-    ve_points[:,1] = yrv[0:n:2]
+    vd_points[:,0] = xrv[0:n:2] # -vd
+    vd_points[:,1] = yrv[0:n:2]
 
     epi_points[:,0] = xepi[0:n:2] # -epi
     epi_points[:,1] = yepi[0:n:2]
