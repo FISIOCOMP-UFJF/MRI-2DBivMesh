@@ -22,7 +22,7 @@ def generate_mesh_from_matlab(patient, outputfile, slice):
     xepi = RVEpiX[:,0,slicePatient]
     RVEpiY = data['setstruct']['RVEpiY'][0][0]
     yepi = RVEpiY[:,0,slicePatient]
-
+    
     n = len(xlv)
     sz = len(xlv[0:n:2])
 
@@ -42,6 +42,47 @@ def generate_mesh_from_matlab(patient, outputfile, slice):
 
     lc = 1
 
+
+    dataScar = data['setstruct']['Roi'][0][0][0] #scar
+    nScar = data['setstruct']['RoiN'][0][0][0] #nScar
+    numfib = nScar[0]
+    #print(dataScar.shape)
+    #exit(0)
+    #print(numfib)
+    #print(dataScar)
+
+    scarList = []
+    #scar = np.zeros((numfib, 40, 3))
+    
+    #print(dataScar[0][0][0:80:2,0])
+    #print(dataScar[0][1][0:80:2,0])
+
+    #print("-------------------------")
+
+   # print(dataScar[1][0][0:80:2,0])
+   # print(dataScar[1][1][0:80:2,0])
+
+    #exit(0)
+    
+    for i in range(numfib):
+        scar = np.zeros((40, 3))  # Create a new scar array in each iteration
+        for j in range(numfib):
+            scar[:, 0] = dataScar[i][0][0:80:2, 0]
+            scar[:, 1] = dataScar[i][1][0:80:2, 0]
+        scarList.append(scar)
+
+   # print(scarList[0].shape)
+    
+    if numfib > 0:
+        fib_points = []
+        for i in range(numfib):
+            try:
+                fib_points.append(scarList[i][:])
+            except Exception as e:
+                print(f"Error loading points from the file")
+
+
+    print(fib_points)
     gmsh.initialize()
 
     #checking outer files
@@ -81,6 +122,7 @@ def generate_mesh_from_matlab(patient, outputfile, slice):
     cl_fibs = []
     
     if numfib > 0:
+        
         for fib_pts in fib_points:  #coordinates of the points
             fpt = []
             for pt in fib_pts:  #add the points to gmsh
@@ -93,7 +135,6 @@ def generate_mesh_from_matlab(patient, outputfile, slice):
             cl_list.append(cl)
 
     gmsh.model.geo.synchronize()
-
     #create surface
     surface = gmsh.model.geo.addPlaneSurface(cl_list)
     gmsh.model.geo.synchronize()
