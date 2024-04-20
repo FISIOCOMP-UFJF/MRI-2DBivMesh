@@ -23,5 +23,6 @@ if args.t == 0:
         generate_mesh_from_points(args.epi,args.vd,args.ve,args.fibbase, args.numfib, args.o)
     generate_fiber2D(args.o, args.numfib)
 else:
-    generate_mesh_from_matlab(args.m, args.o, args.s)
-    generate_fiber2D(args.o, args.numfib)
+
+    numfib = generate_mesh_from_matlab(args.m, args.o, args.s)
+    generate_fiber2D(args.o, numfib)
