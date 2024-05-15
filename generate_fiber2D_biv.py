@@ -77,7 +77,6 @@ def generate_fiber2D(mesh_name, numfib):
     # Define Rodrigues rotation matrix
     W = df.as_matrix([[0, -gradU[2], gradU[1]], [gradU[2], 0, -gradU[0]], [-gradU[1], gradU[0], 0]])
     I = df.as_matrix([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
-    #R = I + df.sin(theta)*W + 2*(df.sin(theta/2)**2)*W*W
 
     # Define vector orthogonal to gradient
     sl = df.as_vector([-gradU[1], gradU[0], 0])

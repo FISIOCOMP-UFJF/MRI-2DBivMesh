@@ -41,17 +41,19 @@ def generate_mesh_from_matlab(patient, outputfile, slice):
 
     dataScar = data['setstruct']['Roi'][0][0][0] #scar
     nScar = data['setstruct']['RoiN'][0][0][0] #nScar
-    numfib = nScar[0]
-
+    numfibTotal = nScar[0]
+    numfib = 0
     scarList = []
     
-    for i in range(numfib):
-        scar = np.zeros((40, 3))
-        for j in range(numfib):
-            scar[:, 0] = dataScar[i][0][0:80:2, 0]
-            scar[:, 1] = dataScar[i][1][0:80:2, 0]
-        scarList.append(scar)
-    
+    if numfibTotal > 0: 
+        for i in range(numfibTotal):
+            if dataScar[i][3][0] == slice: # Separate scars by slice
+                scar = np.zeros((40, 3))
+                scar[:, 0] = dataScar[i][0][0:80:2, 0]
+                scar[:, 1] = dataScar[i][1][0:80:2, 0]
+                scarList.append(scar)
+                numfib += 1
+        
     if numfib > 0:
         fib_points = []
         for i in range(numfib):
