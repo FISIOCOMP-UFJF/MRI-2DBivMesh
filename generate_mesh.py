@@ -230,3 +230,25 @@ def generate_mesh_from_points(epi, vd, ve, fibbase, numfib, outputfile):
     gmsh.finalize()
     
     return outputfile+".msh"
+
+
+def verify_zSize(patient):
+    data = scipy.io.loadmat(patient)
+    zSize = data['setstruct']['ZSize'][0][0][0][0]
+    return zSize
+
+def verify_slices(patient):
+    data = scipy.io.loadmat(patient)
+    zSize = data['setstruct']['ZSize'][0][0][0][0]
+    slices = []
+    for i in range(zSize):
+        endoX = data['setstruct']['EndoX'][0][0] #ve
+        xlv = endoX[:,0,i]
+        n = len(xlv)
+        sz = len(xlv[0:n:2])
+        ve_points = np.zeros((sz,3))
+        ve_points[:,0] = xlv[0:n:2]
+        if not np.isnan(ve_points[0, 0]):
+            slices.append(i)
+            
+    return slices

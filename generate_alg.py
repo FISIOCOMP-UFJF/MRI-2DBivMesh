@@ -3,6 +3,9 @@ import argparse
 from generate_mesh import generate_mesh_from_points
 from generate_fiber2D_biv import generate_fiber2D
 from generate_mesh import generate_mesh_from_matlab
+from generate_mesh import verify_zSize
+from generate_mesh import verify_slices
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-epi', type=str, default='epi.txt', help='File with segmentation epicardium points')
@@ -22,7 +25,16 @@ if args.t == 0:
     else:
         generate_mesh_from_points(args.epi,args.vd,args.ve,args.fibbase, args.numfib, args.o)
     generate_fiber2D(args.o, args.numfib)
-else:
-
+elif args.t == 1:
     numfib = generate_mesh_from_matlab(args.m, args.o, args.s)
     generate_fiber2D(args.o, numfib)
+
+else:
+    zSize = verify_zSize(args.m)
+    slices = verify_slices(args.m)
+
+    print(slices)
+    for i, slice in enumerate(slices):
+
+        numfib = generate_mesh_from_matlab(args.m, args.o+"_slice_"+str(slice), slice)
+        generate_fiber2D(args.o+"_slice_"+str(slice), numfib)
