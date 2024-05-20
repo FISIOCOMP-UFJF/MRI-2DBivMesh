@@ -15,13 +15,27 @@ if [ $t -eq 0 ]; then
     dz=${10}
     m=0
     slice=0
-elif [ $t -eq 1 -o $t -eq 2 ]; then
+
+elif [ $t -eq 1 ]; then
     output_file=$2
     m=$3
     slice=$4
     dx=$5
     dy=$6
     dz=$7
+    epi=0
+    vd=0
+    ve=0
+    numfib=0
+    fibbase=0
+    
+elif [ $t -eq 2 ]; then
+    output_file=$2
+    m=$3
+    dx=$4
+    dy=$5
+    dz=$6
+    slice=0
     epi=0
     vd=0
     ve=0
@@ -55,46 +69,43 @@ else
             fi
         fi
 
-        python3 generate_alg.py -epi "$epi" -vd "$vd" -ve "$ve" -numfib "$numfib" -fibbase "$fibbase" -o "$output_file" -t 0 -m 0
+        echo "Warning: the script considers that the mesh is in millimeters. For other units, it is necessary to change the unit_factor (-r) in exec_generation.sh."
+        python3 generate_alg.py -epi "$epi" -vd "$vd" -ve "$ve" -numfib "$numfib" -fibbase "$fibbase" -o "$output_file" -t "$t" -m "$m" -s "$slice" -dx "$dx" -dy "$dy" -dz "$dz"
         python_exit_code=$?
         if [ $python_exit_code -ne 0 ]; then
             echo "Error: Failed to execute generate_alg.py (exit code: $python_exit_code)"
             exit 1
         fi
 
-        echo "Warning: the script considers that the mesh is in millimeters. For other units, it is necessary to change the unit_factor (-r) in exec_generation.sh."
-        cd hexa-mesh-from-VTK/
-        ./bin/HexaMeshFromVTK -i "../$output_file.vtu" --dx "$dx" --dy "$dy" --dz "$dz" -r 1000 -o "../$output_file.alg" -c ../config_file.ini --2d
 
     elif [ $t -eq 1 ]; then
         if [ $# -ne 7 ]; then
             echo "Error: Invalid number of parameters."
             exit 1
         fi
-        python3 generate_alg.py -epi 0 -vd 0 -ve 0 -numfib 0 -fibbase 0 -o "$output_file" -t 1 -m "$m" -s "$slice"
+
+        echo "Warning: the script considers that the mesh is in millimeters. For other units, it is necessary to change the unit_factor (-r) in exec_generation.sh."
+        python3 generate_alg.py -epi "$epi" -vd "$vd" -ve "$ve" -numfib "$numfib" -fibbase "$fibbase" -o "$output_file" -t "$t" -m "$m" -s "$slice" -dx "$dx" -dy "$dy" -dz "$dz"
         python_exit_code=$?
         if [ $python_exit_code -ne 0 ]; then
             echo "Error: Failed to execute generate_alg.py (exit code: $python_exit_code)"
             exit 1
         fi
-        echo "Warning: the script considers that the mesh is in millimeters. For other units, it is necessary to change the unit_factor (-r) in exec_generation.sh."
-        cd hexa-mesh-from-VTK/
-        ./bin/HexaMeshFromVTK -i "../$output_file.vtu" --dx "$dx" --dy "$dy" --dz "$dz" -r 1000 -o "../$output_file.alg" -c ../config_file.ini --2d
     
     elif [ $t -eq 2 ]; then
 
-        if [ $# -ne 7 ]; then
+        if [ $# -ne 6 ]; then
             echo "Error: Invalid number of parameters."
             exit 1
         fi
-        python3 generate_alg.py -epi 0 -vd 0 -ve 0 -numfib 0 -fibbase 0 -o "$output_file" -t 2 -m "$m" -s "$slice"
+
+        echo "Warning: the script considers that the mesh is in millimeters. For other units, it is necessary to change the unit_factor (-r) in exec_generation.sh."
+        python3 generate_alg.py -epi "$epi" -vd "$vd" -ve "$ve" -numfib "$numfib" -fibbase "$fibbase" -o "$output_file" -t "$t" -m "$m" -s "$slice" -dx "$dx" -dy "$dy" -dz "$dz"
         python_exit_code=$?
+
         if [ $python_exit_code -ne 0 ]; then
             echo "Error: Failed to execute generate_alg.py (exit code: $python_exit_code)"
             exit 1
         fi
-        echo "Warning: the script considers that the mesh is in millimeters. For other units, it is necessary to change the unit_factor (-r) in exec_generation.sh."
-        cd hexa-mesh-from-VTK/
-        ./bin/HexaMeshFromVTK -i "../$output_file.vtu" --dx "$dx" --dy "$dy" --dz "$dz" -r 1000 -o "../$output_file.alg" -c ../config_file.ini --2d
     fi
 fi
