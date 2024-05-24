@@ -128,11 +128,11 @@ def generate_mesh_from_matlab(patient, outputfile, slice):
 
     gmsh.model.geo.synchronize()
 
-    gmsh.write(outputfile + '.geo_unrolled')
+    gmsh.write("./outputs_other/" + outputfile + '.geo_unrolled')
 
     gmsh.model.mesh.generate(2)
     gmsh.option.setNumber("Mesh.MshFileVersion", 2) #save in ASCII 2 format
-    gmsh.write(outputfile + ".msh")
+    gmsh.write("./outputs_other/" + outputfile + ".msh")
     gmsh.clear()
     gmsh.finalize()
     
@@ -221,11 +221,11 @@ def generate_mesh_from_points(epi, vd, ve, fibbase, numfib, outputfile):
 
     gmsh.model.geo.synchronize()
 
-    gmsh.write(outputfile + '.geo_unrolled')
+    gmsh.write("./outputs_other/" + outputfile + '.geo_unrolled')
 
     gmsh.model.mesh.generate(2)
     gmsh.option.setNumber("Mesh.MshFileVersion", 2) #save in ASCII 2 format
-    gmsh.write(outputfile + ".msh")
+    gmsh.write("./outputs_other/" + outputfile + ".msh")
     gmsh.clear()
     gmsh.finalize()
     
@@ -257,7 +257,7 @@ def verify_slices(patient):
         ve_points[:,0] = xlv[0:n:2]
         vd_points[:,0] = xrv[0:n:2]
         epi_points[:,0] = xepi[0:n:2]
-        
+
         if not np.isnan(ve_points[0, 0]) and not np.isnan(vd_points[0, 0]) and not np.isnan(epi_points[0, 0]):
             slices.append(i)
             
