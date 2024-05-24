@@ -49,5 +49,5 @@ else:
         numfib = generate_mesh_from_matlab(args.m, args.o+"_slice_"+str(slice), slice)
         generate_fiber2D(args.o+"_slice_"+str(slice), numfib)
         os.chdir('hexa-mesh-from-VTK/')
-        os.system(f'./bin/HexaMeshFromVTK -i "../{args.o}.vtu" --dx {args.dx} --dy {args.dy} --dz {args.dz} -r 1000 -o "../{args.o}_slice_{slice}.alg" -c ../config_file.ini --2d')
+        os.system(f'./bin/HexaMeshFromVTK -i "../{args.o}_slice_{slice}.vtu" --dx {args.dx} --dy {args.dy} --dz {args.dz} -r 1000 -o "../{args.o}_slice_{slice}.alg" -c ../config_file.ini --2d')
         os.chdir('../')

@@ -243,12 +243,22 @@ def verify_slices(patient):
     slices = []
     for i in range(zSize):
         endoX = data['setstruct']['EndoX'][0][0] #ve
+        RVEndoX = data['setstruct']['RVEndoX'][0][0] #vd    
+        RVEpiX = data['setstruct']['RVEpiX'][0][0] # epi
+
         xlv = endoX[:,0,i]
+        xrv = RVEndoX[:,0,i]
+        xepi = RVEpiX[:,0,i]
         n = len(xlv)
         sz = len(xlv[0:n:2])
         ve_points = np.zeros((sz,3))
+        vd_points = np.zeros((sz,3))
+        epi_points = np.zeros((sz,3))
         ve_points[:,0] = xlv[0:n:2]
-        if not np.isnan(ve_points[0, 0]):
+        vd_points[:,0] = xrv[0:n:2]
+        epi_points[:,0] = xepi[0:n:2]
+        
+        if not np.isnan(ve_points[0, 0]) and not np.isnan(vd_points[0, 0]) and not np.isnan(epi_points[0, 0]):
             slices.append(i)
             
     return slices
