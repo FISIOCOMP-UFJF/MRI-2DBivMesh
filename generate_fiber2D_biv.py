@@ -37,7 +37,7 @@ def solve_laplace(mesh, boundary_markers, boundary_values):
 def generate_fiber2D(mesh_name, numfib):
     
     #convert mesh to fenics format
-    meshname = mesh_name
+    meshname = './outputs_other/'+mesh_name
     ifilename = meshname + '.msh'
     ofilename = meshname + '.xml'
     iformat = 'gmsh'

@@ -18,7 +18,7 @@ Generates 2D biventricular mesh from MRI to electrophysiology simulators.
   ```
 
 # Description parameters
-  - t: Input type: txt or matlab
+  - t: type of generation, where 0 is for .txt, 1 for a specific slice of the .mat, and 2 for all slices
 
   - epi: epicardium segmentation
 
@@ -47,9 +47,13 @@ To generate .alg do using .txt:
 ```sh
 bash exec_generation_alg.sh 0 epi vd ve numfib fibbase output_file_name dx dy dz
 ```
-To generate .alg do using .mat:
+To generate a specific slice using a .alg file from a .mat file:
 ```sh
 bash exec_generation_alg.sh 1 output_file_name patient_mat slice dx dy dz
+```
+To generate all slices using a .alg file from a .mat file:
+```sh
+bash exec_generation_alg.sh 2 output_file_name patient_mat dx dy dz
 ```
 
 # Running example
@@ -60,9 +64,13 @@ For segmentation without fibrosis, set numFib to zero and optionally skip the fi
 ```sh
 bash exec_generation_alg.sh 0 ./segmentation/epi9.txt ./segmentation/endoVD9.txt ./segmentation/endoVE9.txt 0 output_file 0.2 0.2 0.2
 ```
-For using .mat:
+For specific slice using .mat:
 ```sh
 bash exec_generation_alg.sh 1 outputfile ./segmentation/Patient_3.mat 5 0.2 0.2 0.2
+```
+For all slices using .mat:
+```sh
+bash exec_generation_alg.sh 2 outputfile ./segmentation/Patient_3.mat 0.2 0.2 0.2
 ```
 
 # How to cite:

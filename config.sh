@@ -4,6 +4,8 @@
 dir="MRI-2DBivMesh"
 
 if [ $(basename "$PWD") = "$dir" ]; then
+    mkdir outputs_other
+    mkdir outputs_alg
     if command -v git &> /dev/null; then
         echo "Cloning hexa-mesh-from-VTK repository..."
         git clone https://github.com/rsachetto/hexa-mesh-from-VTK.git
