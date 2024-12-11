@@ -47,11 +47,11 @@ To generate .alg do using .txt:
 ```sh
 bash exec_generation_alg.sh 0 epi vd ve numfib fibbase output_file_name dx dy dz
 ```
-To generate a specific slice using a .alg file from a .mat file:
+To generate a specific slice from a .alg file based on a .mat file:
 ```sh
 bash exec_generation_alg.sh 1 output_file_name patient_mat slice dx dy dz
 ```
-To generate all slices using a .alg file from a .mat file:
+To generate all slices from an .alg file based on a .mat file:
 ```sh
 bash exec_generation_alg.sh 2 output_file_name patient_mat dx dy dz
 ```
