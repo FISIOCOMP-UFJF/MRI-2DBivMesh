@@ -1,7 +1,9 @@
 # MRI-2DBivMesh
 Generates 2D biventricular mesh from MRI to electrophysiology simulators.
 
-# Pre-Requisites
+## Pre-Requisites
+
+You do **not** need to install the individual libraries manually — the required dependencies are all included in the provided Conda environment.
 
   - FEniCS 2019.1.0
   - Gmsh
@@ -9,13 +11,30 @@ Generates 2D biventricular mesh from MRI to electrophysiology simulators.
   - h5py 
   - Scipy
   - CMake
-  - VTK (libvtk7-dev)
-  - [hexa-mesh-from-VTK](https://github.com/rsachetto/hexa-mesh-from-VTK.git): This repository is necessary for the generation of hexahedral meshes from VTK files. It will be cloned during the Configuration.
-  
+  - VTK (libvtk9-dev)
+  - [hexa-mesh-from-VTK](https://github.com/FilipeNamorato/hexa-mesh-from-VTK_vtk9.git): This repository is necessary for the generation of hexahedral meshes from VTK files. It will be cloned during the Configuration.
+
+  ## Installation
+  1. Clone this repository
+  ```sh
+   git clone https://github.com/FISIOCOMP-UFJF/MRI-2DBivMesh.git
+   cd MRI-2DBivMesh
+   ```
+
+  2. Create the Conda environment from the provided `.yml`:
+   ```sh
+   conda env create -f mri2d.yml
+   ```
+
+  3. Activate the environment:
+   ```sh
+   conda activate mri2d
+   ```
+
 # Configuration
   ```sh
-    bash config.sh
-  ```
+   bash config.sh
+   ```
 
 # Description parameters
   - t: type of generation, where 0 is for .txt, 1 for a specific slice of the .mat, and 2 for all slices
