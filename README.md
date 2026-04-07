@@ -1,98 +1,124 @@
 # MRI-2DBivMesh
-Generates 2D biventricular mesh from MRI to electrophysiology simulators.
+
+Generates 2D biventricular `.alg` meshes from cardiac MRI segmentations for electrophysiology simulators.
+
+---
 
 ## Pre-Requisites
 
-You do **not** need to install the individual libraries manually — the required dependencies are all included in the provided Conda environment.
+All dependencies are included in the provided Conda environment — no manual installation needed.
 
-  - FEniCS 2019.1.0
-  - Gmsh
-  - meshio
-  - h5py 
-  - Scipy
-  - CMake
-  - VTK (libvtk9-dev)
-  - [hexa-mesh-from-VTK](https://github.com/FilipeNamorato/hexa-mesh-from-VTK_vtk9.git): This repository is necessary for the generation of hexahedral meshes from VTK files. It will be cloned during the Configuration.
+- FEniCS 2019.1.0
+- Gmsh
+- meshio / meshio-gmsh
+- scikit-image
+- h5py, scipy, matplotlib
+- CMake / VTK (libvtk9-dev)
+- [hexa-mesh-from-VTK](https://github.com/FilipeNamorato/hexa-mesh-from-VTK_vtk9.git) — cloned automatically during configuration
 
-  ## Installation
-  1. Clone this repository
-  ```sh
-   git clone https://github.com/FISIOCOMP-UFJF/MRI-2DBivMesh.git
-   cd MRI-2DBivMesh
-   ```
+---
 
-  2. Create the Conda environment from the provided `.yml`:
-   ```sh
-   conda env create -f mri2d.yml
-   ```
-
-  3. Activate the environment:
-   ```sh
-   conda activate mri2d
-   ```
-
-# Configuration
-  ```sh
-   bash config.sh
-   ```
-
-# Description parameters
-  - t: type of generation, where 0 is for .txt, 1 for a specific slice of the .mat, and 2 for all slices
-
-  - epi: epicardium segmentation
-
-  - vd: right ventricle endocardium segmentation
-
-  - ve: left ventricle endocardium segmentation
-
-  - numfib: number of fibrosis files
-
-  - fibbase: prefix of the filenames with the fibrosis segmentation
-  
-  - output_file_name: output file name
-
-  - m: .mat file
-
-  - slice: desired slice
-
-  - dx, dy, and dz: refer to the discretization for the .vtu. Conventionally, we use the value of 0.2.
-# Running
-
+## Installation
 
 ```sh
-conda activate fenicsproject
-```
-To generate .alg do using .txt:
-```sh
-bash exec_generation_alg.sh 0 epi vd ve numfib fibbase output_file_name dx dy dz
-```
-To generate a specific slice from a .alg file based on a .mat file:
-```sh
-bash exec_generation_alg.sh 1 output_file_name patient_mat slice dx dy dz
-```
-To generate all slices from an .alg file based on a .mat file:
-```sh
-bash exec_generation_alg.sh 2 output_file_name patient_mat dx dy dz
+git clone https://github.com/FISIOCOMP-UFJF/MRI-2DBivMesh.git
+cd MRI-2DBivMesh
+conda env create -f mri2d.yml
+conda activate mri2d
+bash config.sh
 ```
 
-# Running example
+---
+
+## Usage
+
+All generation is done through `generate_alg.py`, which has two subcommands.
+
+### From a Segment `.mat` file
+
 ```sh
-bash exec_generation_alg.sh 0 ./segmentation/epi9.txt ./segmentation/endoVD9.txt ./segmentation/endoVE9.txt 3 ./segmentation/fibr9_ output_file 0.2 0.2 0.2
-```
-For segmentation without fibrosis, set numFib to zero and optionally skip the fibrosis segmentation:
-```sh
-bash exec_generation_alg.sh 0 ./segmentation/epi9.txt ./segmentation/endoVD9.txt ./segmentation/endoVE9.txt 0 output_file 0.2 0.2 0.2
-```
-For specific slice using .mat:
-```sh
-bash exec_generation_alg.sh 1 outputfile ./segmentation/Patient_3.mat 5 0.2 0.2 0.2
-```
-For all slices using .mat:
-```sh
-bash exec_generation_alg.sh 2 outputfile ./segmentation/Patient_3.mat 0.2 0.2 0.2
+# All valid slices (auto-detect fibrosis)
+python3 generate_alg.py mat -m segmentation/Patient_2.mat -o Patient_2
+
+# Single slice
+python3 generate_alg.py mat -m segmentation/Patient_2.mat -o Patient_2 --slice 4
+
+# Custom resolution (default: 0.1 mm)
+python3 generate_alg.py mat -m segmentation/Patient_2.mat -o Patient_2 --dx 0.2 --dy 0.2 --dz 0.2
 ```
 
-# How to cite:
+### From plain-text contour files
 
-PEREIRA, J. P. B. ; SOARES, T. J. ; WERNECK, Y. B. ; ALMEIDA, D. K. ; SANTOS, Y. R. A. ; SANTOS, F. J. M. ; FRANCO, T. D. ; OLIVEIRA, R. S. ; SCHMAL, T. R. ; SOUZA, T. G. S. E. ; ROCHA, B. M. ; CAMPOS, J. O. ; DOS SANTOS, R. W. . PIPELINE PARA AVALIAÇÃO DO RISCO ARRÍTMICO COM MODELOS COMPUTACIONAIS PERSONALIZADOS BASEADOS EM RESSONÂNCIA MAGNÉTICA CARDÍACA E ELETROCARDIOGRAMA. In: XXVI Encontro Nacional de Modelagem Computacional e XIV Encontro de Ciência e Tecnologia dos Materiais, 2023, Nova Friburgo. Anais do XXVI Encontro Nacional de Modelagem Computacional e XIV Encontro de Ciência e Tecnologia dos Materiais, 2023.
+```sh
+# With fibrosis
+python3 generate_alg.py txt -epi epi.txt -vd vd.txt -ve ve.txt -o MyMesh --numfib 3 --fibbase f
+
+# Without fibrosis
+python3 generate_alg.py txt -epi epi.txt -vd vd.txt -ve ve.txt -o MyMesh
+```
+
+---
+
+## Fibrosis marking (`--scar`)
+
+| Mode | Behaviour |
+|---|---|
+| `auto` *(default)* | Uses `GreyZone.map` from the `.mat` if available; falls back to `Roi` otherwise |
+| `greyzone` | Forces `GreyZone.map` — tag 1 = border zone, tag 2 = core fibrosis |
+| `roi` | Forces `Roi`-based marking — tag 1 = fibrosis |
+| `none` | No fibrosis marking |
+
+```sh
+python3 generate_alg.py mat -m segmentation/Patient_2.mat -o Patient_2 --scar greyzone
+python3 generate_alg.py mat -m segmentation/Patient_2.mat -o Patient_2 --scar roi
+python3 generate_alg.py mat -m segmentation/Patient_2.mat -o Patient_2 --scar none
+```
+
+Material tags written to the `.alg`:
+
+| Value | Tissue |
+|---|---|
+| `0` | Healthy myocardium |
+| `1` | Greyzone / border zone fibrosis |
+| `2` | Core fibrosis *(only in `greyzone` mode)* |
+
+---
+
+## Output structure
+
+```
+outputs/
+  <run_name>/
+    <run_name>_slice_4.alg   ← simulation input
+    <run_name>_slice_4.vtu   ← visualization (ParaView)
+    <run_name>_slice_5.alg
+    <run_name>_slice_5.vtu
+    ...
+    tmp/                     ← intermediate files (.msh, .xml, .xdmf, ...)
+```
+
+---
+
+## Help
+
+```sh
+python3 generate_alg.py --help
+python3 generate_alg.py mat --help
+python3 generate_alg.py txt --help
+```
+
+---
+
+## How to cite
+
+If you use this pipeline, please cite:
+
+NAMORATO, F. L.; SOARES, T. J.; VIOL, R. D.; SCHMAL, T. R.; DOS SANTOS, R. W.; CAMPOS, J. O. *Geração semi-automática de geometrias computacionais biventriculares personalizadas por paciente.* In: XXIX Congresso Brasileiro de Engenharia Biomédica (CBEB 2024), Ribeirão Preto, Brasil, 2024. p. 621–627.
+https://sbeb.org.br/wp-content/uploads/2024/10/SBEB-CBEB2024-ProceedingsFinal.pdf
+
+---
+
+Also related:
+
+PEREIRA, J. P. B. et al. *Pipeline para avaliação do risco arrítmico com modelos computacionais personalizados baseados em ressonância magnética cardíaca e eletrocardiograma.* XXVI Encontro Nacional de Modelagem Computacional, Nova Friburgo, 2023.
 https://www.even3.com.br/anais/xxvi-encontro-nacional-de-modelagem-computacional-xiv-encontro-de-ciencia-e-tecnologia-dos-materiais-338941/696802-pipeline-para-avaliacao-do-risco-arritmico-com-modelos-computacionais-personalizados-baseados-em-ressonancia-magn/

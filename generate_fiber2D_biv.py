@@ -1,7 +1,8 @@
 # # Generating fibers for patient specific 2D geometries
 
+import os
 import dolfin as df
-from math import pi, cos, sin
+from math import pi
 import meshio
 import numpy as np
 from dolfin_utils.meshconvert import meshconvert
@@ -34,10 +35,10 @@ def solve_laplace(mesh, boundary_markers, boundary_values):
     return u
 
 
-def generate_fiber2D(mesh_name, numfib):
-    
+def generate_fiber2D(mesh_name, numfib, tmp_dir="./outputs_other"):
+
     #convert mesh to fenics format
-    meshname = './outputs_other/'+mesh_name
+    meshname = os.path.join(tmp_dir, mesh_name)
     ifilename = meshname + '.msh'
     ofilename = meshname + '.xml'
     iformat = 'gmsh'
@@ -76,7 +77,6 @@ def generate_fiber2D(mesh_name, numfib):
 
     # Define Rodrigues rotation matrix
     W = df.as_matrix([[0, -gradU[2], gradU[1]], [gradU[2], 0, -gradU[0]], [-gradU[1], gradU[0], 0]])
-    I = df.as_matrix([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
 
     # Define vector orthogonal to gradient
     sl = df.as_vector([-gradU[1], gradU[0], 0])
@@ -96,7 +96,7 @@ def generate_fiber2D(mesh_name, numfib):
     # Assigns label (healthy or fibrosis) for each element
     V0 = df.FunctionSpace(mesh, 'DG', 0)
     mat  = df.Function(V0)
-    mat_values = np.array([0, 1])  # conductivity value for each region
+    mat_values = np.array([0, 1, 2])  # 0=healthy, 1=greyzone, 2=core fibrosis
 
     if numfib > 0:
         help = np.asarray(materials.array(), dtype=np.int32)
